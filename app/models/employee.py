@@ -1,15 +1,12 @@
 import enum
 from sqlalchemy import Column, Integer, String, Boolean, Enum
 from app.database import Base
+from app.models.enums import GenderType
 
 class SkillLevel(enum.Enum):
     HAND = "hand"
     FOOT = "foot"
     BOTH = "both"
-
-class GenderType(enum.Enum):
-    MALE = "male"
-    FEMALE = "female"
 
 class Employee(Base):
     __tablename__ = "employees"

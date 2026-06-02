@@ -2,9 +2,10 @@ from fastapi import FastAPI
 from app.database import engine, Base
 from app.models.employee import Employee
 from app.models.customer import Customer
+from app.models.service import Service
 from app.routers.employee import router as employee_router
 from app.routers.customer import router as customer_router
-
+from app.routers.service import router as service_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -12,6 +13,7 @@ app = FastAPI()
 
 app.include_router(employee_router)
 app.include_router(customer_router)
+app.include_router(service_router)
 
 @app.get("/")
 def root():

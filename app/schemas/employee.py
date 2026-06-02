@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from app.models.employee import SkillLevel, GenderType
+from app.models.employee import SkillLevel
+from app.models.enums import GenderType
 
 class EmployeeCreate(BaseModel):
     name: str
