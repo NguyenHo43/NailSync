@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.customer import Customer
 from app.schemas.customer import CustomerCreate
+from app.utils import get_or_404
 
 router = APIRouter()
 
@@ -20,4 +21,4 @@ def get_customer(db: Session = Depends(get_db)):
 
 @router.get("/customers/{id}")
 def get_customer_by_id(id: int, db: Session = Depends(get_db)):
-    return db.query(Customer).filter(Customer.id == id).first()
+    return get_or_404(db, Customer, id, detail="Customer not found")

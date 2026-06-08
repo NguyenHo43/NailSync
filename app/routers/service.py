@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.service import Service
 from app.schemas.service import ServiceCreate
+from app.utils import get_or_404
 
 router = APIRouter()
 
@@ -20,4 +21,4 @@ def get_service(db: Session = Depends(get_db)):
 
 @router.get("/services/{id}")
 def get_service_by_id(id: int, db: Session = Depends(get_db)):
-    return db.query(Service).filter(Service.id == id).first()
+    return get_or_404(db, Service, id, detail="Service not found")

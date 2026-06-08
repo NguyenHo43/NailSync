@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.employee import Employee
 from app.models.turn import Turn
 from app.schemas.employee import EmployeeCreate
+from app.utils import get_or_404
 
 
 router = APIRouter()
@@ -23,10 +24,12 @@ def get_employee(db: Session = Depends(get_db)):
     
 @router.get("/employees/{employee_id}")
 def get_employee_by_id(employee_id: int, db: Session = Depends(get_db)):
-    return db.query(Employee).filter(Employee.id==id).first()
+    return get_or_404(db, Employee, employee_id, detail="Employee not found")
 
-@router.get("/employees/{employees_id}/salary")
+@router.get("/employees/{employee_id}/salary")
 def get_salary(employee_id: int, month: int, year: int,db: Session = Depends(get_db)):
+    get_or_404(db, Employee, employee_id, detail="Employee not found")
+    
     turns = db.query(Turn).filter(Turn.employee_id == employee_id,
                                   func.extract('month', Turn.date)==month,
                                   func.extract('year', Turn.date)==year).all()
