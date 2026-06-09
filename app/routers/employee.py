@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.employee import Employee
 from app.models.turn import Turn
-from app.schemas.employee import EmployeeCreate
+from app.schemas.employee import EmployeeCreate, EmployeeUpdate
 from app.utils import get_or_404, check_duplicate
 
 
@@ -47,3 +47,15 @@ def get_salary(employee_id: int, month: int, year: int,db: Session = Depends(get
         "total_tip": total_tip,
         "total": total_service + total_tip
     }
+
+@router.patch("/employees/{employee_id}")
+def update_employee(employee_id: int, employee: EmployeeUpdate, db: Session = Depends(get_db)):
+    db_employee = get_or_404(db, Employee, employee_id, detail="Employee not found")
+
+    update_data = employee.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_employee, key, value)
+
+    db.commit()
+    db.refresh(db_employee)
+    return db_employee

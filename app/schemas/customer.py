@@ -5,5 +5,6 @@ from typing import Optional
 
 class CustomerCreate(PhoneModel):
     name: str
+    phone: str
     gender: GenderType
     birthday: Optional[date] = None
