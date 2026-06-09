@@ -8,10 +8,10 @@ def test_employee_salary(client):
     employee_id = emp.json()["id"]
 
     cus = client.post("/customers", json={
-        "name": "Andrew Smith",
-        "phone": "918-433-4547",
-        "gender": "male",
-        "birthday": "1995-06-02"
+        "name": "Jen Ngo",
+        "phone": "918-453-4927",
+        "gender": "female",
+        "birthday": "1999-07-06"
     })
     customer_id = cus.json()["id"]
 
