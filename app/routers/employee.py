@@ -5,13 +5,15 @@ from app.database import get_db
 from app.models.employee import Employee
 from app.models.turn import Turn
 from app.schemas.employee import EmployeeCreate
-from app.utils import get_or_404
+from app.utils import get_or_404, check_duplicate
 
 
 router = APIRouter()
 
 @router.post("/employees")
 def create_employee(employee: EmployeeCreate, db: Session = Depends(get_db)):
+    check_duplicate(db, Employee, Employee.phone, employee.phone, "Phone number already exists")
+    
     db_employee = Employee(**employee.model_dump())
     db.add(db_employee)
     db.commit()

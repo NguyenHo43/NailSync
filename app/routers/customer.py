@@ -3,12 +3,14 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.customer import Customer
 from app.schemas.customer import CustomerCreate
-from app.utils import get_or_404
+from app.utils import get_or_404, check_duplicate
 
 router = APIRouter()
 
 @router.post("/customers")
 def create_customer(customer: CustomerCreate, db: Session = Depends(get_db)):
+    check_duplicate(db, Customer, Customer.phone, customer.phone, "Phone number already exists")
+    
     db_customer = Customer(**customer.model_dump())
     db.add(db_customer)
     db.commit()

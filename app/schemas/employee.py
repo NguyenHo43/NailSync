@@ -1,10 +1,9 @@
-from pydantic import BaseModel
 from app.models.employee import SkillLevel
 from app.models.enums import GenderType
+from app.schemas.base import PhoneModel
 
-class EmployeeCreate(BaseModel):
+class EmployeeCreate(PhoneModel):
     name: str
-    phone: str
     gender: GenderType
     skill_level : SkillLevel
     is_active: bool = True
