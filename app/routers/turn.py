@@ -39,7 +39,7 @@ def get_turn_by_employee_id(employee_id: int, date: date,db: Session = Depends(g
     get_or_404(db, Employee, employee_id, detail="Employee not found")
     return db.query(Turn).filter(Turn.employee_id==employee_id, Turn.date==date).all()
 
-@router.patch('/turns/{turn_id}/checkout')
+@router.patch("/turns/{turn_id}/checkout")
 def checkout_turn(turn_id: int, checkout: TurnCheckout, db: Session = Depends(get_db)):
     turn = get_or_404(db, Turn, turn_id, detail="Turn not found")
 
