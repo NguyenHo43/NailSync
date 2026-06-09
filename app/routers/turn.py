@@ -30,6 +30,10 @@ def get_turn(db: Session = Depends(get_db)):
 def get_turn_by_date(date: date, db: Session = Depends(get_db)):
     return db.query(Turn).filter(Turn.date==date).all()
 
+@router.get("/turns/{turn_id}")
+def get_turn(turn_id: int, db: Session = Depends(get_db)):
+    return get_or_404(db, Turn, turn_id, detail="Turn not found")
+
 @router.get("/turns/employee/{employee_id}/date/{date}")
 def get_turn_by_employee_id(employee_id: int, date: date,db: Session = Depends(get_db)):
     get_or_404(db, Employee, employee_id, detail="Employee not found")
