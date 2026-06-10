@@ -25,3 +25,4 @@ def test_update_customer(client, sample_customer):
 
     assert response.status_code == 200
     assert response.json()["name"] == "Thu Smith"
+    
