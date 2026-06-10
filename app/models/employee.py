@@ -16,7 +16,8 @@ class Employee(Base):
     phone = Column(String(20), nullable=False)
     gender = Column(Enum(GenderType), nullable=False)
     skill_level = Column(Enum(SkillLevel), nullable=False)
-    is_active = Column(Boolean, default=True)
+    is_employed = Column(Boolean, default=True)
+    is_active = Column(Boolean, default=False)
     turn_order = Column(Integer, default=0)
     
     

@@ -7,7 +7,8 @@ class EmployeeCreate(PhoneModel):
     name: str
     gender: GenderType
     skill_level : SkillLevel
-    is_active: bool = True
+    is_employed: bool = True
+    is_active: bool = False
     turn_order: int = 0
 
 class EmployeeUpdate(PhoneModel):
@@ -15,5 +16,6 @@ class EmployeeUpdate(PhoneModel):
     phone: Optional[str] = None
     gender: Optional[GenderType] = None
     skill_level: Optional[SkillLevel] = None
+    is_employed: Optional[bool] = None
     is_active: Optional[bool] = None
     turn_order: Optional[int] = None

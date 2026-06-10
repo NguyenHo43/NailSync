@@ -59,3 +59,11 @@ def update_employee(employee_id: int, employee: EmployeeUpdate, db: Session = De
     db.commit()
     db.refresh(db_employee)
     return db_employee
+
+@router.delete("/employees/{employee_id}")
+def delete_employee(employee_id: int, db: Session = Depends(get_db)):
+    db_employee = get_or_404(db, Employee, employee_id, detail="Employee not found")
+
+    db_employee.is_employed = False
+    db.commit()
+    return {"message": "Employee deleted successfully"}
