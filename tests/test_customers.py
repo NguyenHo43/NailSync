@@ -1,3 +1,5 @@
+import pytest
+
 def test_create_customer(client):
     response = client.post("/customers", json={
         "name": "Sarah Smith",
