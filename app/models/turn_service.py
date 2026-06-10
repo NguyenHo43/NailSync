@@ -2,7 +2,7 @@ from app.database import Base
 from sqlalchemy import Column, Integer, Float, ForeignKey
 
 class TurnService(Base):
-    __tablename__ = "turn_service"
+    __tablename__ = "turn_services"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     turn_id = Column(Integer, ForeignKey("turns.id"), nullable=False)
