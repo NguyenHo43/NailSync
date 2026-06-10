@@ -8,3 +8,9 @@ class CustomerCreate(PhoneModel):
     phone: str
     gender: GenderType
     birthday: Optional[date] = None
+
+class CustomerUpdate(PhoneModel):
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    gender: Optional[GenderType] = None
+    birthday: Optional[date] = None
