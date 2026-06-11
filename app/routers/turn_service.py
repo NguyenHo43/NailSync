@@ -37,3 +37,12 @@ def get_turn_service_by_turn(turn_id: int, db: Session = Depends(get_db), curren
     if current_user.role.value == "employee" and turn.employee_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not enough permissions")
     return db.query(TurnService).filter(TurnService.turn_id==turn_id).all()
+
+@router.delete("/turn-services/{turn_service_id}")
+def delete_turn_service(turn_service_id: int, db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner", "manager"]))):
+    db_turn_service = get_or_404(db, TurnService, turn_service_id, detail="Turn service not found")
+
+    db.delete(db_turn_service)
+    db.commit()
+    return {"message": "Turn service deleted succesfully"}
+    
