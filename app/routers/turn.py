@@ -47,9 +47,17 @@ def get_turn_by_employee_id(employee_id: int, date: date,db: Session = Depends(g
 @router.patch("/turns/{turn_id}/checkout")
 def checkout_turn(turn_id: int, checkout: TurnCheckout, db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner", "manager"]))):
     turn = get_or_404(db, Turn, turn_id, detail="Turn not found")
-
+    customer = get_or_404(db, Customer, turn.customer_id, detail="Customer not found")
     turn_services = db.query(TurnService).filter(TurnService.turn_id==turn_id).all()
-    total_service = sum(ts.price_at_time + (ts.extra_charge or 0) for ts in turn_services)
+
+    new_stamps = sum(1 for ts in turn_services if ts.price_at_time >= 30)
+    total_stamps = customer.stamp + new_stamps
+
+    discounts = total_stamps // 10
+    customer.stamp = total_stamps % 10
+
+    discount_amount = discounts * 10
+    total_service = sum(ts.price_at_time + (ts.extra_charge or 0) for ts in turn_services) - discount_amount
 
     turn.total_service = total_service
     turn.total_tip = checkout.total_tip
