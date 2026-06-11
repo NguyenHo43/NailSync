@@ -6,14 +6,14 @@ from app.models.employee import Employee
 from app.models.turn import Turn
 from app.schemas.employee import EmployeeCreate, EmployeeUpdate, EmployeeResponse
 from app.utils import get_or_404, check_duplicate
-from app.auth import hash_password, get_current_user
+from app.auth import hash_password, get_current_user,  require_roles
 from typing import List
 
 
 router = APIRouter()
 
 @router.post("/employees")
-def create_employee(employee: EmployeeCreate, db: Session = Depends(get_db)):
+def create_employee(employee: EmployeeCreate, db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner", "manager"]))):
     check_duplicate(db, Employee, Employee.phone, employee.phone, "Phone number already exists")
     
     employee_data = employee.model_dump()
