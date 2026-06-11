@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class TurnCreate(BaseModel):
     employee_id: int
@@ -8,3 +9,8 @@ class TurnCreate(BaseModel):
 
 class TurnCheckout(BaseModel):
     total_tip: float = 0
+
+class TurnUpdate(BaseModel):
+    employee_id: Optional[int] = None
+    customer_id: Optional[int] = None
+    is_complete: Optional[bool] = None

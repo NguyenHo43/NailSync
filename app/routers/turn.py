@@ -6,7 +6,7 @@ from app.models.turn import Turn
 from app.models.employee import Employee
 from app.models.customer import Customer
 from app.models.turn_service import TurnService
-from app.schemas.turn import TurnCreate, TurnCheckout
+from app.schemas.turn import TurnCreate, TurnCheckout, TurnUpdate
 from app.utils import get_or_404
 from app.auth import get_current_user, require_roles
 
@@ -58,3 +58,15 @@ def checkout_turn(turn_id: int, checkout: TurnCheckout, db: Session = Depends(ge
     db.refresh(turn)
     
     return turn
+
+@router.patch("/turns/{turn_id}")
+def update_turn(turn_id: int, turn_update: TurnUpdate, db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner", "manager"]))):
+    db_turn = get_or_404(db, Turn, turn_id, detail="Turn not found")
+
+    update_data = turn_update.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_turn, key, value)
+
+    db.commit()
+    db.refresh(db_turn)
+    return db_turn
