@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from app.database import engine, Base
 from app.models.employee import Employee
 from app.models.customer import Customer
@@ -11,6 +11,7 @@ from app.routers.service import router as service_router
 from app.routers.turn import router as turn_router
 from app.routers.turn_service import router as turn_service_router
 from app.routers.auth import router as auth_router
+from app.auth import get_current_user
 
 
 Base.metadata.create_all(bind=engine)

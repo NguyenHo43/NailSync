@@ -26,16 +26,21 @@ def create_employee(employee: EmployeeCreate, db: Session = Depends(get_db), cur
     return db_employee
 
 @router.get("/employees", response_model=List[EmployeeResponse])
-def get_employee(db: Session = Depends(get_db), current_user: Employee = Depends(get_current_user)):
+def get_employee(db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner", "manager"]))):
     return db.query(Employee).all()
     
 @router.get("/employees/{employee_id}")
-def get_employee_by_id(employee_id: int, db: Session = Depends(get_db)):
+def get_employee_by_id(employee_id: int, db: Session = Depends(get_db), current_user: Employee = Depends(get_current_user)):
+    if current_user.role.value == "employee" and current_user.id != employee_id:
+        raise HTTPException(status_code=403, detail="Not enough permissions")
     return get_or_404(db, Employee, employee_id, detail="Employee not found")
 
 @router.get("/employees/{employee_id}/salary")
-def get_salary(employee_id: int, month: int, year: int,db: Session = Depends(get_db)):
+def get_salary(employee_id: int, month: int, year: int,db: Session = Depends(get_db), current_user: Employee = Depends(get_current_user)):
     get_or_404(db, Employee, employee_id, detail="Employee not found")
+
+    if current_user.role.value == "employee" and current_user.id != employee_id:
+        raise HTTPException(status_code=403, detail="Not enough permissions")
     
     turns = db.query(Turn).filter(Turn.employee_id == employee_id,
                                   func.extract('month', Turn.date)==month,
@@ -54,7 +59,7 @@ def get_salary(employee_id: int, month: int, year: int,db: Session = Depends(get
     }
 
 @router.patch("/employees/{employee_id}")
-def update_employee(employee_id: int, employee: EmployeeUpdate, db: Session = Depends(get_db)):
+def update_employee(employee_id: int, employee: EmployeeUpdate, db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner", "manager"]))):
     db_employee = get_or_404(db, Employee, employee_id, detail="Employee not found")
 
     update_data = employee.model_dump(exclude_unset=True)
@@ -66,7 +71,7 @@ def update_employee(employee_id: int, employee: EmployeeUpdate, db: Session = De
     return db_employee
 
 @router.delete("/employees/{employee_id}")
-def delete_employee(employee_id: int, db: Session = Depends(get_db)):
+def delete_employee(employee_id: int, db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner"]))):
     db_employee = get_or_404(db, Employee, employee_id, detail="Employee not found")
 
     db_employee.is_employed = False
