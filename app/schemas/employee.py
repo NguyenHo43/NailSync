@@ -1,9 +1,11 @@
 from app.models.employee import SkillLevel
-from app.models.enums import GenderType
+from app.models.enums import GenderType, Role
 from app.schemas.base import PhoneModel
 from typing import Optional
 
 class EmployeeCreate(PhoneModel):
+    role: Role = Role.EMPLOYEE
+    password: str
     name: str
     gender: GenderType
     skill_level : SkillLevel

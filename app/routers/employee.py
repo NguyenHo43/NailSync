@@ -6,6 +6,7 @@ from app.models.employee import Employee
 from app.models.turn import Turn
 from app.schemas.employee import EmployeeCreate, EmployeeUpdate
 from app.utils import get_or_404, check_duplicate
+from app.auth import hash_password
 
 
 router = APIRouter()
@@ -14,7 +15,10 @@ router = APIRouter()
 def create_employee(employee: EmployeeCreate, db: Session = Depends(get_db)):
     check_duplicate(db, Employee, Employee.phone, employee.phone, "Phone number already exists")
     
-    db_employee = Employee(**employee.model_dump())
+    employee_data = employee.model_dump()
+    employee_data["password"] = hash_password(employee_data["password"])
+
+    db_employee = Employee(**employee_data)
     db.add(db_employee)
     db.commit()
     db.refresh(db_employee)

@@ -1,17 +1,19 @@
-from app.database import SessionLocal
+from app.database import SessionLocal, Base, engine
 from app.models.employee import Employee, SkillLevel
 from app.models.customer import Customer
 from app.models.service import Service, ServiceCategory
-from app.models.enums import GenderType
+from app.models.enums import GenderType, Role
+from app.auth import hash_password
 
 def seed():
+    Base.metadata.create_all(bind=engine)
     db = SessionLocal()
 
     employees = [
-        Employee(name="Anna Nguyen", phone="9185550101", gender=GenderType.FEMALE, skill_level=SkillLevel.BOTH, is_employed=True, is_active=False),
-        Employee(name="Jenny Tran", phone="9185550102", gender=GenderType.FEMALE, skill_level=SkillLevel.HAND, is_employed=True, is_active=False),
-        Employee(name="Kevin Le", phone="9185550103", gender=GenderType.MALE, skill_level=SkillLevel.BOTH, is_employed=True, is_active=False),
-        Employee(name="Lisa Pham", phone="9185550104", gender=GenderType.FEMALE, skill_level=SkillLevel.FOOT, is_employed=True, is_active=False),
+        Employee(name="Eddy Ho", phone="9185550101", gender=GenderType.FEMALE, skill_level=SkillLevel.BOTH, role=Role.OWNER, password=hash_password("owner123"), is_employed=True, is_active=False),
+        Employee(name="Jenny Tran", phone="9185550102", gender=GenderType.FEMALE, skill_level=SkillLevel.HAND, role=Role.MANAGER, password=hash_password("manager123"), is_employed=True, is_active=False),
+        Employee(name="Kevin Le", phone="9185550103", gender=GenderType.MALE, skill_level=SkillLevel.BOTH, role=Role.EMPLOYEE, password=hash_password("employee123"), is_employed=True, is_active=False),
+        Employee(name="Lisa Pham", phone="9185550104", gender=GenderType.FEMALE, skill_level=SkillLevel.FOOT, role=Role.EMPLOYEE, password=hash_password("employee123"), is_employed=True, is_active=False),
     ]
 
     customers = [

@@ -4,3 +4,6 @@ Sqlalchemy
 Psycopg2-binary
 pytest
 httpx
+python-jose
+passlib
+bcrypt
