@@ -6,7 +6,8 @@ def sample_employee(client):
         "name": "Anna Nguyen",
         "phone": "918-555-0123",
         "gender": "female",
-        "skill_level": "both"
+        "skill_level": "both",
+        "password": "test123"
     })
     return response.json()
 

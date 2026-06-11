@@ -3,7 +3,8 @@ def test_create_turn_service(client):
         "name": "Bina Nguyen",
         "phone": "918-335-4523",
         "gender": "female",
-        "skill_level": "both"
+        "skill_level": "both",
+        "password": "test123"
     })
     employee_id = emp.json()["id"]
 
