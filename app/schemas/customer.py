@@ -1,5 +1,5 @@
 from app.models.enums import GenderType
-from app.schemas.base import PhoneModel
+from app.schemas.base import PhoneModel, BaseModel
 from datetime import date
 from typing import Optional
 
@@ -14,3 +14,24 @@ class CustomerUpdate(PhoneModel):
     phone: Optional[str] = None
     gender: Optional[GenderType] = None
     birthday: Optional[date] = None
+
+class CustomerResponse(BaseModel):
+    id: int
+    name: str
+    phone: str
+    gender: GenderType
+    stamp: int
+    birthday: Optional[date] = None
+
+    class Config:
+        from_attributes = True
+
+class CustomerPublicResponse(BaseModel):
+    id: int
+    name: str
+    gender: GenderType
+    stamp: int
+    birthday: Optional[date] = None
+
+    class Config:
+        from_attributes = True

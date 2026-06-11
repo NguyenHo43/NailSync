@@ -1,8 +1,7 @@
 from app.models.employee import SkillLevel
 from app.models.enums import GenderType, Role
-from app.schemas.base import PhoneModel
+from app.schemas.base import PhoneModel, BaseModel
 from typing import Optional
-from pydantic import BaseModel
 
 class EmployeeCreate(PhoneModel):
     role: Role = Role.EMPLOYEE

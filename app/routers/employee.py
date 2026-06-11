@@ -33,6 +33,7 @@ def get_employee(db: Session = Depends(get_db), current_user: Employee = Depends
 def get_employee_by_id(employee_id: int, db: Session = Depends(get_db), current_user: Employee = Depends(get_current_user)):
     if current_user.role.value == "employee" and current_user.id != employee_id:
         raise HTTPException(status_code=403, detail="Not enough permissions")
+    
     return get_or_404(db, Employee, employee_id, detail="Employee not found")
 
 @router.get("/employees/{employee_id}/salary")
