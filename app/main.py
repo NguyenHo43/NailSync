@@ -10,6 +10,7 @@ from app.routers.customer import router as customer_router
 from app.routers.service import router as service_router
 from app.routers.turn import router as turn_router
 from app.routers.turn_service import router as turn_service_router
+from app.routers.auth import router as auth_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -20,6 +21,7 @@ app.include_router(customer_router)
 app.include_router(service_router)
 app.include_router(turn_router)
 app.include_router(turn_service_router)
+app.include_router(auth_router)
 
 @app.get("/")
 def root():
