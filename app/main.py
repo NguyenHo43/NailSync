@@ -12,6 +12,7 @@ from app.routers.turn import router as turn_router
 from app.routers.turn_service import router as turn_service_router
 from app.routers.auth import router as auth_router
 
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()

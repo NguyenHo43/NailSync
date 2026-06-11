@@ -2,6 +2,7 @@ from app.models.employee import SkillLevel
 from app.models.enums import GenderType, Role
 from app.schemas.base import PhoneModel
 from typing import Optional
+from pydantic import BaseModel
 
 class EmployeeCreate(PhoneModel):
     role: Role = Role.EMPLOYEE
@@ -21,3 +22,16 @@ class EmployeeUpdate(PhoneModel):
     is_employed: Optional[bool] = None
     is_active: Optional[bool] = None
     turn_order: Optional[int] = None
+
+class EmployeeResponse(BaseModel):
+    id: int
+    role: Role
+    name: str
+    gender: GenderType
+    skill_level : SkillLevel
+    is_employed: bool
+    is_active: bool
+    turn_order: int
+
+    class Config:
+        from_attributes = True

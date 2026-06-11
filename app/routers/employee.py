@@ -4,9 +4,10 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.employee import Employee
 from app.models.turn import Turn
-from app.schemas.employee import EmployeeCreate, EmployeeUpdate
+from app.schemas.employee import EmployeeCreate, EmployeeUpdate, EmployeeResponse
 from app.utils import get_or_404, check_duplicate
-from app.auth import hash_password
+from app.auth import hash_password, get_current_user
+from typing import List
 
 
 router = APIRouter()
@@ -24,8 +25,8 @@ def create_employee(employee: EmployeeCreate, db: Session = Depends(get_db)):
     db.refresh(db_employee)
     return db_employee
 
-@router.get("/employees")
-def get_employee(db: Session = Depends(get_db)):
+@router.get("/employees", response_model=List[EmployeeResponse])
+def get_employee(db: Session = Depends(get_db), current_user: Employee = Depends(get_current_user)):
     return db.query(Employee).all()
     
 @router.get("/employees/{employee_id}")
