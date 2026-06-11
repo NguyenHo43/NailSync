@@ -17,7 +17,7 @@ def seed():
     ]
 
     customers = [
-        Customer(name="Sarah Smith", phone="9181234001", gender=GenderType.FEMALE, birthday="1990-05-15"),
+        Customer(name="Sarah Smith", phone="9181234001", gender=GenderType.FEMALE, birthday="1990-05-15", stamp=9),
         Customer(name="Emily Johnson", phone="9181234002", gender=GenderType.FEMALE, birthday="1985-08-22"),
         Customer(name="Michael Brown", phone="9181234003", gender=GenderType.MALE),
         Customer(name="Jessica Davis", phone="9181234004", gender=GenderType.FEMALE, birthday="1995-03-10"),

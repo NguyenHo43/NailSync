@@ -62,6 +62,8 @@ def checkout_turn(turn_id: int, checkout: TurnCheckout, db: Session = Depends(ge
     turn.total_service = total_service
     turn.total_tip = checkout.total_tip
     turn.is_complete = True
+    
+    db.add(customer)
     db.commit()
     db.refresh(turn)
     

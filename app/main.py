@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends
+from fastapi.security import HTTPBearer
 from app.database import engine, Base
 from app.models.employee import Employee
 from app.models.customer import Customer
@@ -16,7 +17,9 @@ from app.auth import get_current_user
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+app = FastAPI(
+    swagger_ui_parameters={"persistAuthorization": True}
+)
 
 app.include_router(employee_router)
 app.include_router(customer_router)
