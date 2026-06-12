@@ -8,6 +8,6 @@ class Turn(Base):
     employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
     customer_id = Column(Integer, ForeignKey("customers.id"), nullable=False)
     date = Column(Date, server_default=func.current_date(),nullable=False)
-    total_service = Column(Float, nullable=False)
-    total_tip = Column(Float, nullable=False)
+    total_service = Column(Float, default=0, nullable=False)
+    total_tip = Column(Float, default=0, nullable=False)
     is_complete = Column(Boolean, default=False)

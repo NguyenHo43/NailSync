@@ -40,12 +40,14 @@ def get_employee_by_id(employee_id: int, db: Session = Depends(get_db), current_
 def get_salary(employee_id: int, month: int, year: int,db: Session = Depends(get_db), current_user: Employee = Depends(get_current_user)):
     get_or_404(db, Employee, employee_id, detail="Employee not found")
 
+
     if current_user.role.value == "employee" and current_user.id != employee_id:
         raise HTTPException(status_code=403, detail="Not enough permissions")
     
     turns = db.query(Turn).filter(Turn.employee_id == employee_id,
                                   func.extract('month', Turn.date)==month,
-                                  func.extract('year', Turn.date)==year).all()
+                                  func.extract('year', Turn.date)==year,
+                                  Turn.is_complete==True).all()
     
     total_service = sum(turn.total_service for turn in turns)
     total_tip = sum(turn.total_tip for turn in turns)

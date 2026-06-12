@@ -32,7 +32,7 @@ def get_turn_by_date(date: date, db: Session = Depends(get_db), current_user: Em
     return db.query(Turn).filter(Turn.date==date).all()
 
 @router.get("/turns/{turn_id}")
-def get_turn(turn_id: int, db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner", "manager"]))):
+def get_turn_by_id(turn_id: int, db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner", "manager"]))):
     return get_or_404(db, Turn, turn_id, detail="Turn not found")
 
 @router.get("/turns/employee/{employee_id}/date/{date}")
@@ -47,6 +47,10 @@ def get_turn_by_employee_id(employee_id: int, date: date,db: Session = Depends(g
 @router.patch("/turns/{turn_id}/checkout")
 def checkout_turn(turn_id: int, checkout: TurnCheckout, db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner", "manager"]))):
     turn = get_or_404(db, Turn, turn_id, detail="Turn not found")
+
+    if turn.is_complete:
+        raise HTTPException(status_code=409, detail="Turn already checked out")
+    
     customer = get_or_404(db, Customer, turn.customer_id, detail="Customer not found")
     turn_services = db.query(TurnService).filter(TurnService.turn_id==turn_id).all()
 
@@ -62,7 +66,7 @@ def checkout_turn(turn_id: int, checkout: TurnCheckout, db: Session = Depends(ge
     turn.total_service = total_service
     turn.total_tip = checkout.total_tip
     turn.is_complete = True
-    
+
     db.add(customer)
     db.commit()
     db.refresh(turn)
