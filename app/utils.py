@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from app.model.employee import Employee, SkillLevel
+from app.models.employee import Employee, SkillLevel
 def get_or_404(db, model, id, detail="Not found"):
     obj = db.query(model).filter(model.id==id).first()
     if not obj:
