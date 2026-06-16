@@ -25,6 +25,26 @@ def create_employee(employee: EmployeeCreate, db: Session = Depends(get_db), cur
     db.refresh(db_employee)
     return db_employee
 
+@router.post("/employees/{employee_id}/checkin")
+def employee_check_in(employee_id: int, db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner", "manager"]))):
+    employee = get_or_404(db, Employee, employee_id, detail="Employee not found")
+    current_active = db.query(Employee).filter(Employee.is_active==True).count()
+    employee.is_active = True
+    employee.turn_order = current_active + 1
+    db.add(employee)
+    db.commit()
+    return employee
+
+@router.post("/employees/{employee_id}/checkout")
+def employee_check_out(employee_id: int, db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner", "manager"]))):
+    employee = get_or_404(db, Employee, employee_id, detail="Employee not found")
+    employee.is_active = False
+    employee.is_busy = False
+    employee.turn_order = 0
+    db.add(employee)
+    db.commit()
+    return employee
+
 @router.get("/employees", response_model=List[EmployeeResponse])
 def get_employee(db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner", "manager"]))):
     return db.query(Employee).all()
