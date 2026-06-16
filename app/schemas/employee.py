@@ -20,6 +20,7 @@ class EmployeeUpdate(PhoneModel):
     skill_level: Optional[SkillLevel] = None
     is_employed: Optional[bool] = None
     is_active: Optional[bool] = None
+    is_busy: Optional[bool] = None
     turn_order: Optional[int] = None
 
 class EmployeeResponse(BaseModel):
@@ -30,6 +31,7 @@ class EmployeeResponse(BaseModel):
     skill_level : SkillLevel
     is_employed: bool
     is_active: bool
+    is_busy: bool
     turn_order: int
 
     class Config:

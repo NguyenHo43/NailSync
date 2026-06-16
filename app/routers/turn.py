@@ -14,9 +14,12 @@ router = APIRouter()
 
 @router.post("/turns")
 def create_turn(turn: TurnCreate, db: Session = Depends(get_db), current_user: Employee = Depends(require_roles(["owner", "manager"]))):
-    get_or_404(db, Employee, turn.employee_id, detail="Employee not found")
+    employee = get_or_404(db, Employee, turn.employee_id, detail="Employee not found")
     get_or_404(db, Customer, turn.customer_id, detail="Customer not found")
     
+    employee.is_busy = True
+    db.add(employee)
+
     db_turn = Turn(**turn.model_dump())
     db.add(db_turn)
     db.commit()
@@ -51,6 +54,10 @@ def checkout_turn(turn_id: int, checkout: TurnCheckout, db: Session = Depends(ge
     if turn.is_complete:
         raise HTTPException(status_code=409, detail="Turn already checked out")
     
+    employee = get_or_404(db, Employee, turn.employee_id, detail="Employee not found")
+    employee.is_busy = False
+    db.add(employee)
+
     customer = get_or_404(db, Customer, turn.customer_id, detail="Customer not found")
     turn_services = db.query(TurnService).filter(TurnService.turn_id==turn_id).all()
 

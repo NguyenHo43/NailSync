@@ -21,5 +21,6 @@ class Employee(Base):
     is_employed = Column(Boolean, default=True)
     is_active = Column(Boolean, default=False)
     turn_order = Column(Integer, default=0)
+    is_busy = Column(Boolean, default=False)
     
     
