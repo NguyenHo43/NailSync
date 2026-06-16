@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 class TurnCreate(BaseModel):
     employee_id: int
@@ -14,3 +14,8 @@ class TurnUpdate(BaseModel):
     employee_id: Optional[int] = None
     customer_id: Optional[int] = None
     is_complete: Optional[bool] = None
+
+class AutoTurnCreate(BaseModel):
+    customer_id: int
+    service_ids: List[int]
+    same_time: bool = False
