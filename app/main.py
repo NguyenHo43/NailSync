@@ -13,12 +13,19 @@ from app.routers.turn import router as turn_router
 from app.routers.turn_service import router as turn_service_router
 from app.routers.auth import router as auth_router
 from app.auth import get_current_user
-
+from fastapi.middleware.cors import CORSMiddleware
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     swagger_ui_parameters={"persistAuthorization": True}
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(employee_router)
