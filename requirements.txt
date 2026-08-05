@@ -1,10 +1,10 @@
 fastapi
 uvicorn
 sqlalchemy
-psycopg2-binary
+psycopg2-binary==2.9.9
 pytest
 httpx
-python-jose
+python-jose[cryptography]==3.3.0
 passlib
 bcrypt==4.0.1
 python-dotenv
