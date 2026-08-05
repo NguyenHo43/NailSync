@@ -6,7 +6,7 @@ function EmployeeList({ token }){
     const [error, setError] = useState(null);
 
     function fetchEmployees(){
-        fetch('http://localhost:8000/employees', {
+        fetch(`${import.meta.env.VITE_API_URL}/employees`, {
             headers: { Authorization: `Bearer ${token}` },
         })
             .then((res) => {

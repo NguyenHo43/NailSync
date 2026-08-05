@@ -12,7 +12,7 @@ function LoginForm({ onLoginSuccess }) {
 
   function handleLogin(e) {
     e.preventDefault();
-    fetch('http://localhost:8000/auth/login', {
+    fetch(`${import.meta.env.VITE_API_URL}/auth/login` , {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ phone, password }),
