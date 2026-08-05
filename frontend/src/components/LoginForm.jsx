@@ -1,4 +1,9 @@
 import { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import { User, Lock } from "lucide-react";
 
 function LoginForm({ onLoginSuccess }) {
   const [phone, setPhone] = useState("");
@@ -21,14 +26,20 @@ function LoginForm({ onLoginSuccess }) {
   }
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleLogin}>
-        <input type="text" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Login</button>
+    <div className="flex items-center justify-center min-h-screen bg-pink-50">
+      <form onSubmit={handleLogin} className="bg-white p-8 rounded-lg shadow-md w-80 space-y-3">
+        <h1 className="text-center text-3xl">Login</h1>
+        <div className="relative">
+            <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input type="text" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full text-xl pl-9"/>
+        </div>
+        <div className="relative">
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full text-xl pl-9"/>
+        </div>
+        <Button type="submit" className="w-full">Login</Button>
+        {error && <p>Error: {error}</p>}
       </form>
-      {error && <p>Error: {error}</p>}
     </div>
   );
 }

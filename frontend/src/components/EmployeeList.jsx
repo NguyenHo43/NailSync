@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button } from "@/components/ui/button";
 
 function EmployeeList({ token }){
     const [employees, setEmployees] = useState([]);
@@ -17,7 +18,7 @@ function EmployeeList({ token }){
     }
     return (
         <div>
-            <button onClick={fetchEmployees}>Load Employees</button>
+            <Button onClick={fetchEmployees}>Load Employees</Button>
             {error && <p>Error: {error}</p>}
             <ul>
                 {employees.map((emp) => <li key={emp.id}>{emp.name}</li>)}
